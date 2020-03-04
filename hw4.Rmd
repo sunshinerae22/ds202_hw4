@@ -1,0 +1,110 @@
+---
+title: "Homework4"
+author: "Stephanie Femrite"
+date: "2/27/2020"
+output: html_document
+---
+```{r}
+library(classdata)
+library(ggplot2)
+library(dplyr)
+?ChickWeight
+```
+
+1)
+```{r}
+weight0 <- ChickWeight %>% 
+  filter(Time == 0) %>%
+  group_by(Diet)%>%
+  mutate(weight, weightmean = mean(weight))%>%
+  mutate(weight, weightSD = sd(weight))
+```
+
+
+```{r}
+print(weight0)
+```
+
+2)
+```{r}
+Complete <- ChickWeight %>%
+group_by(Chick)%>%
+mutate(weight = n())%>%
+filter(weight == 12)
+```
+
+```{r}
+print(Complete %>% head(3))
+```
+
+3)
+```{r}
+dat4 <- ChickWeight %>%
+        group_by(Chick) %>%
+        mutate(weightgain = weight -weight[Time == 0])
+```
+
+```{r}
+print(dat4%>% head(3))  
+```
+
+4)
+```{r}
+day21 <- dat4 %>%
+        filter(Time == 21)
+```
+
+```{r}
+ggplot(day21, aes(x=weightgain, y=Diet), ) + geom_boxplot()
+```
+
+
+5)
+  a)
+```{r}  
+dat4 %>%
+  arrange(desc(weightgain))
+```
+
+```{r}
+dat4 %>%
+  arrange(weightgain)
+```
+
+Chick 35 gained the most weight.Chicks 3 and 18 lost 4 oz.
+
+b)
+
+Chick 35 was on diet 3 and both Chicks 3 and 18 were on diet 1.
+
+
+6)
+
+```{r}
+day0 <- dat4 %>%
+      group_by(Chick) %>%
+      filter(Time == 0)%>%
+      arrange(desc(weight))
+```
+
+```{r}
+day0 <- dat4 %>%
+      group_by(Chick) %>%
+      filter(Time == 0)%>%
+      arrange(weight)
+```
+
+```{r}
+Chick3 <- dat4 %>%
+          filter(Chick == 3 )
+```
+
+```{r}
+Chick18 <- dat4 %>%
+          filter(Chick == 18)
+```
+
+```{r}
+ggplot(dat4, aes(x= Chick, y=weightgain) + geom_line()
+```  
+  
